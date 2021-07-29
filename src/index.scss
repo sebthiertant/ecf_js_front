@@ -1,0 +1,10 @@
+// reset and generic
+@import "./style/base";
+@import "./style/typography";
+
+// main component
+@import "App";
+
+// component's style
+@import "./components/Button/Button";
+@import "./components/Card/Card";

@@ -1,0 +1,27 @@
+.button_primary {
+	color: #ffffff;
+	background-color: #f457ff;
+	border-radius: 4px;
+	height: 3rem;
+	width: 8rem;
+	margin-right: 2rem;
+	border: 1px solid #f457ff;
+	font-family: "Open", sans-serif;
+	font-weight: 600;
+	cursor: pointer;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	&:hover {
+		background-color: #ffffff;
+		color: #f457ff;
+		border: 1px solid #f457ff;
+		transition: 0.2s;
+	}
+	.button_primary_content {
+		width: 100%;
+		display: flex;
+		align-items: center;
+		justify-content: space-around;
+	}
+}

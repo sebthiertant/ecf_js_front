@@ -1,0 +1,64 @@
+.card_container {
+	margin-top: 2rem;
+	margin-bottom: 1rem;
+	display: flex;
+	flex-direction: column;
+	width: 35rem;
+	height: 15rem;
+	background-color: #ffffff;
+	font: normal normal normal 16px/24px "Open Sans";
+	border-radius: 10px;
+	box-shadow: 6px 12px 12px #330a0a29;
+
+	.card_left_container {
+		display: flex;
+		align-items: center;
+		justify-content: flex-start;
+		.card_left_container_content {
+			margin-top: 1rem;
+			display: flex;
+			flex-direction: column;
+			text-align: left;
+			color: #707070;
+			font-family: "Open Sans";
+			> * {
+				margin-top: 0.1rem;
+			}
+			.job_company_p {
+				color: #707070;
+				font-family: "Open Sans";
+				font-weight: 300;
+			}
+			p {
+				display: flex;
+				align-items: center;
+				.p_svg {
+					margin-right: 0.3rem;
+				}
+			}
+			.mail {
+				cursor: pointer;
+				color: #f457ff;
+				text-decoration: underline;
+			}
+		}
+	}
+	.card_right_buttons_container {
+		width: 100%;
+		display: flex;
+		align-items: center;
+		justify-content: flex-end;
+		.button_primary {
+			margin: 0;
+			height: 2rem;
+			width: 5rem;
+		}
+		.delete_button {
+			margin: 1rem;
+			cursor: pointer;
+			text-decoration: underline;
+			font-style: italic;
+			color: #f457ff;
+		}
+	}
+}

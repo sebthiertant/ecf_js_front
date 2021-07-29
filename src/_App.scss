@@ -1,0 +1,36 @@
+.App {
+	background-color: #fde0ff;
+}
+
+.container {
+	padding-top: 1rem;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+}
+
+.title_container {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+.top_button_container {
+	margin: auto;
+	width: 80%;
+	display: flex;
+	justify-content: flex-end;
+}
+.users_cards_container {
+	width: 80%;
+	margin: auto;
+	display: grid;
+	grid-template-columns: 1fr 1fr;
+	grid-template-rows: 1fr 1fr 1fr 1fr;
+	gap: 1rem 1rem;
+	grid-template-areas:
+		". ."
+		". ."
+		". ."
+		". ."
+		". .";
+}
