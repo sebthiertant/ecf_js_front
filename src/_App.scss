@@ -1,5 +1,6 @@
 .App {
 	background-color: #fde0ff;
+	position: relative;
 }
 
 .container {
@@ -33,4 +34,8 @@
 		". ."
 		". ."
 		". .";
+}
+
+.modal_open {
+	filter: brightness(0.8);
 }
