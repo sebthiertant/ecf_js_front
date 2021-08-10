@@ -2,12 +2,15 @@ import React from "react";
 import Button from "../Button/Button";
 
 const Modal = (props) => {
-	const { toggle, closeModal } = props;
+	const { toggle, closeModal, deleteUserModal, editUserModal } = props;
 
 	const sendForm = () => {
 		console.log("form sent");
 	};
 
+	const deleteUserCard = () => {
+		console.log("delete card user");
+	};
 	return (
 		<>
 			{toggle && (
@@ -65,6 +68,18 @@ const Modal = (props) => {
 							Cancel
 						</span>
 						<Button content={"Confirm"} onClick={sendForm} />
+					</div>
+				</div>
+			)}
+			{deleteUserModal && (
+				<div className="modal_container">
+					<h1>Delete User</h1>
+					<p>Are you sure you want to delete this user ?</p>
+					<div className="buttons_container">
+						<span className="cancel_button" onClick={closeModal}>
+							Cancel
+						</span>
+						<Button content={"Confirm"} onClick={deleteUserCard} />
 					</div>
 				</div>
 			)}

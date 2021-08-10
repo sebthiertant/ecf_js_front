@@ -16,6 +16,8 @@ const Card = (props) => {
 		country,
 		email,
 		phone,
+		editCard,
+		deleteCard,
 	} = props;
 	return (
 		<div className="card_container">
@@ -53,8 +55,10 @@ const Card = (props) => {
 				</div>
 			</div>
 			<div className="card_right_buttons_container">
-				<Button onClick={() => console.log("card click")} content="Modify" />
-				<span className="delete_button">Delete</span>
+				<Button onClick={editCard} content="Modify" />
+				<span onClick={deleteCard} className="delete_button">
+					Delete
+				</span>
 			</div>
 		</div>
 	);

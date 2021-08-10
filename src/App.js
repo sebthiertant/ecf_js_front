@@ -7,6 +7,7 @@ import Users from "./datas/users.json";
 function App() {
 	const [users, setUsers] = useState(null);
 	const [toggleModal, setToggleModal] = useState(false);
+	const [deleteUserModal, setDeleteUserModal] = useState(false);
 
 	// first useEffect to put the json datas into a local state
 	useEffect(() => {
@@ -22,11 +23,26 @@ function App() {
 	// Close modal window if open
 	const closeModal = () => {
 		setToggleModal(false);
+		setDeleteUserModal(false);
+	};
+
+	// Cards Buttons
+	const editCard = () => {
+		console.log("edit button");
+	};
+
+	const deleteCard = () => {
+		console.log("delete button");
+		setDeleteUserModal(true);
 	};
 
 	return (
 		<>
-			<div className={"App " + (toggleModal ? "modal_open" : "")}>
+			<div
+				className={
+					"App " + (toggleModal || deleteUserModal ? "modal_open" : "")
+				}
+			>
 				<div className="container">
 					<div className="title_container">
 						<h1>Users List</h1>
@@ -62,6 +78,8 @@ function App() {
 											country={country}
 											email={email}
 											phone={phone}
+											editCard={editCard}
+											deleteCard={deleteCard}
 										/>
 									);
 							  })
@@ -69,7 +87,11 @@ function App() {
 					</div>
 				</div>
 			</div>
-			<Modal toggle={toggleModal} closeModal={closeModal}></Modal>
+			<Modal
+				toggle={toggleModal}
+				closeModal={closeModal}
+				deleteUserModal={deleteUserModal}
+			></Modal>
 		</>
 	);
 }
