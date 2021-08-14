@@ -8,8 +8,20 @@ function App() {
 	const [toggleModal, setToggleModal] = useState(false);
 	const [deleteUserModal, setDeleteUserModal] = useState(false);
 	const [deleteUserIndex, setDeleteUserIndex] = useState(null);
+	const [editUserData, setEditUserData] = useState(null);
 	const [error, setError] = useState("");
-
+	const [modalInputs, setModalInputs] = useState({
+		firstName: "",
+		lastName: "",
+		photoURL: "",
+		job: "",
+		company: "",
+		address: "",
+		city: "",
+		country: "",
+		email: "",
+		phone: "",
+	});
 	// axios
 	const axios = require("axios");
 
@@ -31,44 +43,77 @@ function App() {
 
 	// Add user button click
 	const onAddButtonClick = () => {
-		console.log("add button");
 		setToggleModal(true);
 	};
 
 	// Close modal window if open
 	const closeModal = () => {
+		setModalInputs({
+			firstName: "",
+			lastName: "",
+			photoURL: "",
+			job: "",
+			company: "",
+			address: "",
+			city: "",
+			country: "",
+			email: "",
+			phone: "",
+		});
 		setToggleModal(false);
 		setDeleteUserModal(false);
+		setEditUserData(null);
 	};
 
 	// Cards Buttons
-	const editCard = () => {
-		console.log("edit button");
+	const editCard = (index) => {
+		const editUser = users[index];
+		setToggleModal(true);
+		setEditUserData(editUser);
+	};
+
+	const onInputChange = (name, value) => {
+		// made a local copy to change the values into it
+		let tempInputState = modalInputs;
+		tempInputState[name] = value;
+		setModalInputs(tempInputState);
 	};
 
 	// get the modal form and close the modal. Also add the user to the server
-	const sendFormModal = (userData) => {
+	const sendFormModal = () => {
 		let userId = users.length + 1;
-
 		axios
 			.post("http://localhost:8000/users", {
 				id: userId,
-				firstName: userData.firstName,
-				lastName: userData.firstName,
-				photoURL: userData.photoURL,
-				job: userData.job,
-				company: userData.company,
-				address: userData.address,
-				city: userData.city,
-				country: userData.country,
-				email: userData.email,
-				phone: userData.phone,
+				firstName: modalInputs.firstName,
+				lastName: modalInputs.firstName,
+				photoURL: modalInputs.photoURL,
+				job: modalInputs.job,
+				company: modalInputs.company,
+				address: modalInputs.address,
+				city: modalInputs.city,
+				country: modalInputs.country,
+				email: modalInputs.email,
+				phone: modalInputs.phone,
 			})
 			.catch(function (error) {
 				console.log("Creation user error : " + error);
 			});
 
 		setToggleModal(false);
+		setEditUserData(null);
+		setModalInputs({
+			firstName: "",
+			lastName: "",
+			photoURL: "",
+			job: "",
+			company: "",
+			address: "",
+			city: "",
+			country: "",
+			email: "",
+			phone: "",
+		});
 	};
 
 	const deleteCard = (index) => {
@@ -135,12 +180,12 @@ function App() {
 											country={country}
 											email={email}
 											phone={phone}
-											editCard={editCard}
+											editCard={() => editCard(index)}
 											deleteCard={() => deleteCard(index)}
 										/>
 									);
 							  })
-							: "[Chargement en cours]"}
+							: "[Chargement des utilisateurs en cours]"}
 					</div>
 				</div>
 			</div>
@@ -150,6 +195,8 @@ function App() {
 				deleteUserModal={deleteUserModal}
 				sendForm={sendFormModal}
 				deleteUserCard={deleteUserCard}
+				onInputChange={onInputChange}
+				editUserModal={editUserData}
 			></Modal>
 		</>
 	);
