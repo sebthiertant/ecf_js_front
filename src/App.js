@@ -2,17 +2,32 @@ import { useEffect, useState } from "react";
 import Button from "./components/Button/Button";
 import Card from "./components/Card/Card";
 import Modal from "./components/Modal/Modal";
-import Users from "./datas/users.json";
 
 function App() {
 	const [users, setUsers] = useState(null);
 	const [toggleModal, setToggleModal] = useState(false);
 	const [deleteUserModal, setDeleteUserModal] = useState(false);
+	const [deleteUserIndex, setDeleteUserIndex] = useState(null);
+	const [error, setError] = useState("");
 
-	// first useEffect to put the json datas into a local state
+	// axios
+	const axios = require("axios");
+
+	// first useEffect to get the users list from the server
 	useEffect(() => {
-		setUsers(Users);
-	}, []);
+		axios
+			.get("http://localhost:8000/users")
+			.then((response) => {
+				if (response.status === 200) {
+					return response.data;
+				} else {
+					setError("Error on getting the users list from server");
+				}
+			})
+			.then((data) => {
+				setUsers(data);
+			});
+	}, [users]);
 
 	// Add user button click
 	const onAddButtonClick = () => {
@@ -31,9 +46,51 @@ function App() {
 		console.log("edit button");
 	};
 
-	const deleteCard = () => {
-		console.log("delete button");
+	// get the modal form and close the modal. Also add the user to the server
+	const sendFormModal = (userData) => {
+		let userId = users.length + 1;
+
+		axios
+			.post("http://localhost:8000/users", {
+				id: userId,
+				firstName: userData.firstName,
+				lastName: userData.firstName,
+				photoURL: userData.photoURL,
+				job: userData.job,
+				company: userData.company,
+				address: userData.address,
+				city: userData.city,
+				country: userData.country,
+				email: userData.email,
+				phone: userData.phone,
+			})
+			.catch(function (error) {
+				console.log("Creation user error : " + error);
+			});
+
+		setToggleModal(false);
+	};
+
+	const deleteCard = (index) => {
+		setDeleteUserIndex(index);
 		setDeleteUserModal(true);
+	};
+
+	const deleteUserCard = () => {
+		const userList = users;
+		const userId = users[deleteUserIndex].id;
+		// local datas
+		userList.splice(deleteUserIndex, 1);
+		setUsers([...userList]);
+
+		axios
+			.delete("http://localhost:8000/users/" + userId)
+			.catch(function (error) {
+				console.log("Delete user error : " + error);
+			});
+
+		setDeleteUserIndex(null);
+		setDeleteUserModal(false);
 	};
 
 	return (
@@ -54,9 +111,9 @@ function App() {
 						{users
 							? users.map((user, index) => {
 									const {
-										photoURL,
 										firstName,
 										lastName,
+										photoURL,
 										job,
 										company,
 										address,
@@ -68,9 +125,9 @@ function App() {
 									return (
 										<Card
 											key={index}
-											picture={photoURL}
 											firstName={firstName}
 											lastName={lastName}
+											picture={photoURL}
 											job={job}
 											company={company}
 											address={address}
@@ -79,7 +136,7 @@ function App() {
 											email={email}
 											phone={phone}
 											editCard={editCard}
-											deleteCard={deleteCard}
+											deleteCard={() => deleteCard(index)}
 										/>
 									);
 							  })
@@ -91,6 +148,8 @@ function App() {
 				toggle={toggleModal}
 				closeModal={closeModal}
 				deleteUserModal={deleteUserModal}
+				sendForm={sendFormModal}
+				deleteUserCard={deleteUserCard}
 			></Modal>
 		</>
 	);
