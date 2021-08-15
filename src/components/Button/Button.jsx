@@ -2,10 +2,10 @@ import React from "react";
 import { ReactComponent as AddIcon } from "../../assets/add.svg";
 
 const Button = (props) => {
-	const { onClick, content, icon } = props;
+	const { onClick, content, icon, disabled } = props;
 
 	return (
-		<button className="button_primary" onClick={onClick}>
+		<button className="button_primary" onClick={onClick} disabled={disabled}>
 			<div className="button_primary_content">
 				{icon ? (
 					<>

@@ -34,6 +34,12 @@
 		". ."
 		". ."
 		". .";
+	@media (max-width: 1355px) {
+		display: flex;
+		flex-direction: column;
+		justify-content: center;
+		align-items: center;
+	}
 }
 
 .modal_open {

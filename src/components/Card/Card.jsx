@@ -18,6 +18,7 @@ const Card = (props) => {
 		phone,
 		editCard,
 		deleteCard,
+		modalOpen,
 	} = props;
 	return (
 		<div className="card_container">
@@ -55,10 +56,14 @@ const Card = (props) => {
 				</div>
 			</div>
 			<div className="card_right_buttons_container">
-				<Button onClick={editCard} content="Modify" />
-				<span onClick={deleteCard} className="delete_button">
-					Delete
-				</span>
+				<Button onClick={editCard} content="Modify" disabled={modalOpen} />
+				{modalOpen ? (
+					<span className="delete_button">Delete</span>
+				) : (
+					<span onClick={deleteCard} className="delete_button">
+						Delete
+					</span>
+				)}
 			</div>
 		</div>
 	);

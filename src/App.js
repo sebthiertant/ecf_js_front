@@ -22,6 +22,7 @@ function App() {
 		email: "",
 		phone: "",
 	});
+
 	// axios
 	const axios = require("axios");
 
@@ -39,7 +40,7 @@ function App() {
 			.then((data) => {
 				setUsers(data);
 			});
-	}, [users]);
+	}, [axios, users]);
 
 	// Add user button click
 	const onAddButtonClick = () => {
@@ -65,11 +66,48 @@ function App() {
 		setEditUserData(null);
 	};
 
-	// Cards Buttons
+	// Edit user card button function
 	const editCard = (index) => {
 		const editUser = users[index];
 		setToggleModal(true);
 		setEditUserData(editUser);
+		setModalInputs(editUser);
+	};
+
+	// send edited user form to the server
+	const editedSendForm = () => {
+		axios
+			.patch("http://localhost:8000/users/" + modalInputs.id, {
+				id: modalInputs.id,
+				firstName: modalInputs.firstName,
+				lastName: modalInputs.lastName,
+				photoURL: modalInputs.photoURL,
+				job: modalInputs.job,
+				company: modalInputs.company,
+				address: modalInputs.address,
+				city: modalInputs.city,
+				country: modalInputs.country,
+				email: modalInputs.email,
+				phone: modalInputs.phone,
+			})
+			.catch(function (error) {
+				console.log(`Editing user ${modalInputs.id} error :  + ${error}`);
+			});
+
+		setToggleModal(false);
+		setEditUserData(null);
+		setModalInputs({
+			firstName: "",
+			lastName: "",
+			photoURL: "",
+			job: "",
+			company: "",
+			address: "",
+			city: "",
+			country: "",
+			email: "",
+			phone: "",
+		});
 	};
 
 	const onInputChange = (name, value) => {
@@ -86,7 +124,7 @@ function App() {
 			.post("http://localhost:8000/users", {
 				id: userId,
 				firstName: modalInputs.firstName,
-				lastName: modalInputs.firstName,
+				lastName: modalInputs.lastName,
 				photoURL: modalInputs.photoURL,
 				job: modalInputs.job,
 				company: modalInputs.company,
@@ -147,7 +185,7 @@ function App() {
 			>
 				<div className="container">
 					<div className="title_container">
-						<h1>Users List</h1>
+						{error ? <h1>Error : {error}</h1> : <h1>Users List</h1>}
 					</div>
 					<div className="top_button_container">
 						<Button content="Add user" onClick={onAddButtonClick} icon="true" />
@@ -182,6 +220,7 @@ function App() {
 											phone={phone}
 											editCard={() => editCard(index)}
 											deleteCard={() => deleteCard(index)}
+											modalOpen={toggleModal}
 										/>
 									);
 							  })
@@ -197,6 +236,7 @@ function App() {
 				deleteUserCard={deleteUserCard}
 				onInputChange={onInputChange}
 				editUserModal={editUserData}
+				editedSendForm={editedSendForm}
 			></Modal>
 		</>
 	);

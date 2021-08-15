@@ -10,6 +10,7 @@ const Modal = (props) => {
 		sendForm,
 		deleteUserCard,
 		onInputChange,
+		editedSendForm,
 	} = props;
 
 	return (
@@ -188,7 +189,7 @@ const Modal = (props) => {
 								<input
 									type="text"
 									name="country"
-									value={editUserModal.city}
+									value={editUserModal.country}
 									onChange={(e) => onInputChange(e.target.name, e.target.value)}
 								></input>
 							</label>
@@ -216,7 +217,7 @@ const Modal = (props) => {
 						<span className="cancel_button" onClick={closeModal}>
 							Cancel
 						</span>
-						<Button content={"Confirm"} onClick={sendForm} />
+						<Button content={"Confirm"} onClick={editedSendForm} />
 					</div>
 				</div>
 			)}
