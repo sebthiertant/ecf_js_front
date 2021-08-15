@@ -9,6 +9,7 @@ function App() {
 	const [deleteUserModal, setDeleteUserModal] = useState(false);
 	const [deleteUserIndex, setDeleteUserIndex] = useState(null);
 	const [editUserData, setEditUserData] = useState(null);
+	const [nextId, setNextId] = useState(null);
 	const [error, setError] = useState("");
 	const [modalInputs, setModalInputs] = useState({
 		firstName: "",
@@ -38,7 +39,9 @@ function App() {
 				}
 			})
 			.then((data) => {
+				let dataLength = data.length;
 				setUsers(data);
+				setNextId(data[data.length - 1]);
 			});
 	}, [axios, users]);
 
@@ -96,6 +99,7 @@ function App() {
 
 		setToggleModal(false);
 		setEditUserData(null);
+		setNextId(nextId + 1);
 		setModalInputs({
 			firstName: "",
 			lastName: "",
@@ -119,10 +123,9 @@ function App() {
 
 	// get the modal form and close the modal. Also add the user to the server
 	const sendFormModal = () => {
-		let userId = users.length + 1;
 		axios
 			.post("http://localhost:8000/users", {
-				id: userId,
+				id: nextId.id + 1,
 				firstName: modalInputs.firstName,
 				lastName: modalInputs.lastName,
 				photoURL: modalInputs.photoURL,
