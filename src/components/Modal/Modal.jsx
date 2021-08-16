@@ -98,7 +98,7 @@ const Modal = (props) => {
 							<label>
 								Phone
 								<input
-									type="number"
+									type="text"
 									name="phone"
 									onChange={(e) => onInputChange(e.target.name, e.target.value)}
 								></input>

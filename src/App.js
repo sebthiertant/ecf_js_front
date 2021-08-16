@@ -39,14 +39,21 @@ function App() {
 				}
 			})
 			.then((data) => {
-				let dataLength = data.length;
 				setUsers(data);
-				setNextId(data[data.length - 1]);
 			});
 	}, [axios, users]);
 
 	// Add user button click
 	const onAddButtonClick = () => {
+		if (users === [] || users.length === 0) {
+			setNextId(1);
+		} else if (nextId <= 1) {
+			let usersLength = users.length;
+			setNextId(users[usersLength - 1].id + 1);
+		} else {
+			setNextId(nextId + 1);
+		}
+
 		setToggleModal(true);
 	};
 
@@ -99,7 +106,6 @@ function App() {
 
 		setToggleModal(false);
 		setEditUserData(null);
-		setNextId(nextId + 1);
 		setModalInputs({
 			firstName: "",
 			lastName: "",
@@ -125,7 +131,7 @@ function App() {
 	const sendFormModal = () => {
 		axios
 			.post("http://localhost:8000/users", {
-				id: nextId.id + 1,
+				id: nextId,
 				firstName: modalInputs.firstName,
 				lastName: modalInputs.lastName,
 				photoURL: modalInputs.photoURL,
@@ -140,7 +146,6 @@ function App() {
 			.catch(function (error) {
 				console.log("Creation user error : " + error);
 			});
-
 		setToggleModal(false);
 		setEditUserData(null);
 		setModalInputs({
@@ -188,46 +193,53 @@ function App() {
 			>
 				<div className="container">
 					<div className="title_container">
-						{error ? <h1>Error : {error}</h1> : <h1>Users List</h1>}
+						{error ? <h1>Error : {error}</h1> : <h1>USERS LIST</h1>}
 					</div>
 					<div className="top_button_container">
-						<Button content="Add user" onClick={onAddButtonClick} icon="true" />
+						<Button
+							content="Add user"
+							onClick={onAddButtonClick}
+							icon="true"
+							disabled={users === null}
+						/>
 					</div>
 					<div className="users_cards_container">
-						{users
-							? users.map((user, index) => {
-									const {
-										firstName,
-										lastName,
-										photoURL,
-										job,
-										company,
-										address,
-										city,
-										country,
-										email,
-										phone,
-									} = user;
-									return (
-										<Card
-											key={index}
-											firstName={firstName}
-											lastName={lastName}
-											picture={photoURL}
-											job={job}
-											company={company}
-											address={address}
-											city={city}
-											country={country}
-											email={email}
-											phone={phone}
-											editCard={() => editCard(index)}
-											deleteCard={() => deleteCard(index)}
-											modalOpen={toggleModal}
-										/>
-									);
-							  })
-							: "[Chargement des utilisateurs en cours]"}
+						{users ? (
+							users.map((user, index) => {
+								const {
+									firstName,
+									lastName,
+									photoURL,
+									job,
+									company,
+									address,
+									city,
+									country,
+									email,
+									phone,
+								} = user;
+								return (
+									<Card
+										key={index}
+										firstName={firstName}
+										lastName={lastName}
+										picture={photoURL}
+										job={job}
+										company={company}
+										address={address}
+										city={city}
+										country={country}
+										email={email}
+										phone={phone}
+										editCard={() => editCard(index)}
+										deleteCard={() => deleteCard(index)}
+										modalOpen={toggleModal}
+									/>
+								);
+							})
+						) : (
+							<p>Chargement des utilisateurs en cours</p>
+						)}
 					</div>
 				</div>
 			</div>
